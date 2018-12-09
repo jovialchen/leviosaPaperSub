@@ -1,0 +1,3 @@
+Hi $recipient,\n\nWe would like to invite you to review the attached paper (Title: $papertitle) for the $journal ($tjyear) issue. \n
+As the R&D technical expert, your comments on the paper will definitely help improve the paper quality and will be highly appreciated.\n\n
+If possible, could you offer the comments via the link below by ($deadline)?\n$link\n\nThanks a lot for your comments and your time in advance.\n\n$name on behalf of on behalf of $committee

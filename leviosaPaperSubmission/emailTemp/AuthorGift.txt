@@ -1,0 +1,9 @@
+Dear $recipient,
+\n
+I want to extend my sincere gratitude for your contribution to $tjyear $journal.\n
+Your insightful comments have led us to an improvement of the work. Your support encourages our continued commitment to innovation activities in our workplace.\n
+\n
+Please come to my cubic to pick up your gift. It is $seat. Please contact me via Jabber or $editoremail for any questions.\n
+\n
+Thanks again for your support,\n
+$name on behalf of $committee

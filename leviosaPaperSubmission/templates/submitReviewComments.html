@@ -1,0 +1,74 @@
+{% extends "layout.html" %}
+{% block body %}
+  {% if error %}<p class=error><strong>Error:</strong> {{ error }}{% endif %}
+  <form  action="{{ url_for('submit_review_comments', tjyear=tjyear,paperId=paperId, isManagerReview = isManagerReview) }}" method=post class=entries enctype=multipart/form-data>
+    <dl>
+	<table>	<tr></tr>
+		<tr>
+	<td>Paper's Information</td>
+	<td>Review Form</td>
+	</tr>
+	<tr>
+	<td valign="top">
+	  <dt>Paper Title: {{thisPaperInfo.paperInfo.paperTitle}}
+      <dt>Author's Email:
+		<ul>
+		{% for authorInfo in thisPaperInfo.authorList %}
+			<li>{{authorInfo.email}}
+		{% endfor %}
+		</ul>
+      <dt>Reviewer's Email:
+		<ul>
+			<li>{{reviewerEmail}}
+		</ul>
+	  <dt>Function Area: {{displayStrings.RESEARCHING_AREAS[thisPaperInfo.tjSection]}}
+	  <dt>Review the Paper: <a href={{thisPaperInfo.pdfURL}}>Pdf Link</a>
+	  </td>
+	  <td>
+      <dt>Is this the first submission of this review content?:
+	  {% if lastUpdatedReviewInfo.reviewSubmitted%}No.
+	  {% else %} Yes.
+	  {% endif %}
+
+
+		{% for eachReviewItem in lastUpdatedReviewInfo.itemList %}
+		<dt>{{eachReviewItem.reviewItemName}}<br/>
+		<dd><select name=reviewItemName>
+			{% for string in displayStrings.REVIEW_RESULT %}
+				<option value={{loop.index0}}{% if eachReviewItem.reviewItemGrade==loop.index0 %} selected=selected {%endif%}>{{string}}</option>
+			{% endfor %}
+			</select>
+		{% endfor %}
+  
+
+	  <dt>Overall<br/>
+	  <dd><select name=Overall>
+		{% for string in displayStrings.REVIEW_RESULT %}
+			<option value={{loop.index0}}{% if lastUpdatedReviewInfo.Overall==loop.index0 %} selected=selected {%endif%}>{{string}}</option>
+		{% endfor %}
+		</select>
+ 
+	  <dt>Comments
+		<ul>
+		{% for eachReviewQuestion in lastUpdatedReviewInfo.questionList %}
+			<li>{{eachReviewQuestion.question}}
+			<li><textarea name=answer rows="16" cols="50">{{eachReviewQuestion.answer}}</textarea>
+		{% endfor %}
+		</ul>
+
+	{%if lastUpdatedReviewInfo.commentedVersionURL == "n/a"%} 
+	No commented PDF document.
+	{%else%}
+	<a href="{{lastUpdatedReviewInfo.commentedVersionURL}}">Commented PDF Link</a>
+	{%endif%}
+
+	  <dt>If you completed your excel file, please upload the excel File.
+      <input type=file name=xlsx2Bsubmitted>	  
+	  <dt>If you mark comments on the PDF file, please upload the Pdf File with your comments.
+      <input type=file name=pdf2Bsubmitted>
+	  <dt><input type=submit value=Submit>
+	  </td>
+	  </tr>
+    </dl>
+  </form>
+{% endblock %}

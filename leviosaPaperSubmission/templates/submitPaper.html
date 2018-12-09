@@ -1,0 +1,39 @@
+{% extends "layout.html" %}
+{% block body %}
+  {% if error %}<p class=error><strong>Error:</strong> {{ error }}{% endif %}
+  <form  action="{{ url_for('submit_paper', tjyear=tjyear) }}" method=post class=entries enctype=multipart/form-data>
+    <dl>
+	  <dt>Paper Title:
+	  <dd><input type=text size=40 name=paperTitle>
+      <dt>Author's Email:
+      <dd><input type=text size=40 name=authorEmail1>
+	  <dt>Second Author's Email:
+      <dd><input type=text size=40 name=authorEmail2>
+	  <dt>Third Author's Email:
+      <dd><input type=text size=40 name=authorEmail3>
+	  <dt>Fourth Author's Email:
+      <dd><input type=text size=40 name=authorEmail4>
+	  <dt>Fifth Author's Email:
+      <dd><input type=text size=40 name=authorEmail5>
+      <dt>Manager's Email:
+      <dd><input type=text size=40 name=managerEmail>
+	  <hr>
+	  <dt>Department<br/>
+	  <dd><input type=text size=40 name=department>
+
+	  <dt>Function Area<br/>
+	  <dd>
+		<select name=tjSection>
+		{% for string in displayStrings.RESEARCHING_AREAS %}
+			<option value="{{loop.index0}}">{{string}}</option>
+		{% endfor %}
+		</select>
+
+	  <dt>Upload zip File
+      <input type=file name=zip2Bsubmitted>
+	  <dt>Upload Pdf File
+      <input type=file name=pdf2Bsubmitted>
+ 	  <dt><input type=submit value=Submit>
+    </dl>
+  </form>
+{% endblock %}

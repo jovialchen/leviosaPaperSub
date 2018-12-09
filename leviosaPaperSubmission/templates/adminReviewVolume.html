@@ -1,0 +1,113 @@
+{% extends "layout.html" %}
+{% block body %}
+  {% if session.logged_in %}
+  <form  action="{{ url_for('admin_review_tj', tjyear=tjyear) }}" method=post class=reviewResult enctype=multipart/form-data>
+    <ul class=entries>
+
+	<table class=reviewTable id='reviewVolumeTitleContact'>
+	<tr>
+		<th>Sub Id</th>
+		<th>Paper Title</th>
+		<th>Contact</th>
+		<th>Delete Yes/No</th>
+		<th>Function Area/Pub Id</th>
+		<th>Department</th>
+		<th>Approved Status</th>
+		<th>Manager/Submitted/ Review Result/Link</th>
+		<th>Expert /Submitted / Review Result/Link</th>
+	</tr>
+
+	{% for paper in paperInfoOfTheYear %}
+
+	<tr>
+		<td>{{paper.paperInfo.submissionSequence}}</td>
+		<td><a href={{url_for('review_paper_info_enhanced',tjyear=tjyear,
+		paperId=paper.paperInfo.submissionSequence)}}>{{paper.paperInfo.paperTitle}}</a></td>
+		<td>{{paper.authorList[0].email}}
+		<select name=authorEmailCheck>
+			<option value=0>Not Sending Email To</option>
+			<option value=1>Sending Email To</option>
+		</select><br></td>
+		<td>
+			<select name=deleteSubmission>
+			<option value=0>No</option>
+			<option value=1>Yes</option>
+			</select></td>
+		<td>
+		<select name=functionArea>
+			<option value=0 {% if paper.paperInfo.tjSection == 0%} selected=selected {%endif%}>{{displayStrings.RESEARCHING_AREAS[0]}}</option>
+			<option value=1 {% if paper.paperInfo.tjSection == 1%} selected=selected {%endif%}>{{displayStrings.RESEARCHING_AREAS[1]}}</option>
+			<option value=2 {% if paper.paperInfo.tjSection == 2%} selected=selected {%endif%}>{{displayStrings.RESEARCHING_AREAS[2]}}</option>
+		</select><br>
+
+		<input name=pubId size=4 value={{paper.paperInfo.publishSequence}}> 
+		</td>
+		<td>{{paper.paperInfo.department}}</td>
+		<td>
+		<select name=approvedStatus>
+			<option value=0 {% if paper.paperInfo.approvedStatus == False%} selected=selected {%endif%}>No</option>
+			<option value=1 {% if paper.paperInfo.approvedStatus == True%} selected=selected {%endif%}>Yes</option>
+		</select></td>
+		<td>
+		<select name=managerEmailCheck>
+			<option value=0>Not Sending Email To</option>
+			<option value=1>Sending Email To</option>
+		</select><br>
+		<input name=managerEmail value={{paper.managerInfo.email}}> 
+		{%if paper.managerReviewInfo.reviewSubmitted%}Yes{%else%}No{%endif%}
+		/{{displayStrings.REVIEW_RESULT[paper.managerReviewInfo.Overall]}}/<br>
+		<a href={{url_for('submit_review_comments',tjyear=tjyear,
+		paperId=paper.paperInfo.submissionSequence,isManagerReview=True)}}>Link</a>
+		</td>
+		<td>
+		<select name=expertEmailCheck>
+			<option value=0>Not Sending Email To</option>
+			<option value=1>Sending Email To</option>
+		</select><br>
+		<input name=expertEmail value={{paper.expertInfo.email}}> 
+		{%if paper.expertReviewInfo.reviewSubmitted%}Yes{%else%}No{%endif%}
+		/{{displayStrings.REVIEW_RESULT[paper.expertReviewInfo.Overall]}}/<br>
+		<a href={{url_for('submit_review_comments',tjyear=tjyear,
+		paperId=paper.paperInfo.submissionSequence,isManagerReview=False)}}>Link</a>
+		</td>
+	</tr>
+
+	{% else %}
+		<li><em>Unbelievable.  No submitted papers here so far</em>
+	{% endfor %}
+	</ul>
+	</table>
+	
+	<dt><input type="checkbox" name=SendEmail>Send Email to  	  
+	<select name=recipientRole>
+		{% for string in displayStrings.EMAIL_RECIPIENT_ROLES %}
+			<option value={{ string }}>{{ string }}</option>
+		{% endfor %}
+	</select>
+	<br>
+	<dt><input type="checkbox" name=reminder>Reminder
+    <dl>
+	<dt><input type="checkbox" name=generateReviewLink>Generate Review Link<br>
+    <dt>Deadline: <input name=deadline value={{timeStamp}}>
+	<dt><h4>Attachment mode specific:</h4>
+	<dt><input type="checkbox" name=generateSpreadsheet>Generate Spreadsheet <br>
+				{%if tjinfo.spreadsheetURL == "n/a"%} 
+				No commented Spreadsheet document.
+				{%else%}
+				<a href="{{tjinfo.spreadsheetURL}}">Spreadsheet Link</a>
+				{%endif%}
+		<br>
+	<dt><input type="checkbox" name=downloadArcive>Download Archive <br>
+				{%if tjinfo.archiveURL == "n/a"%} 
+				No commented Archive document.
+				{%else%}
+				<a href="{{tjinfo.archiveURL}}">Archive Link</a>
+				{%endif%}
+		<br>
+	<dt><h4>Generating Paper</h4>		
+ 	<dt><input type="checkbox" name=generateLatexScript>Generate this year's Journal <br>
+		<br>
+	<dt><input type=submit value=Submit onclick='getTableValue("reviewVolume","submitValues")'>
+	</dl>
+	{% endif %}
+{% endblock %}

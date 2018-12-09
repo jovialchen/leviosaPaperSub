@@ -1,0 +1,13 @@
+Hi $recipient,
+\n
+\n
+Thanks very much for your team's great support of the $tjyear $journal activity. This year we received the paper $papertitle from your team member $authorname.
+\n\n
+In the manager review round, would you please review the papers and help check English Syntax and Spell issue? And would you please be kind to offer the comments via the link below by $deadline?
+\n
+$link
+\n
+Thanks again for your team's great support.
+
+Best Regards,
+$name on behalf of on behalf of $committee

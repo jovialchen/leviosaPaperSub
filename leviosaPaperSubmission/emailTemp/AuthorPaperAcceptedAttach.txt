@@ -1,0 +1,18 @@
+Hi $recipient,
+
+Thank you for submitting your paper, " $papertitle ", to the Call for Papers of the $journal $tjyear issue.\n
+\n
+After the multiple round of review, we are glad to inform you that your paper has been accepted.\n
+\n
+Please see attached for the comments from your manager and the review board. \n
+I may have done some update due to editorial purposes. The updated script is also attached for your reference.\n
+\n
+Would you update your paper accordingly and submit the updated version by $deadline?\n
+\n
+Also please select function area from below items which your paper belongs to and send to us together.\n
+$area
+\n
+Note: the updated paper should be submitted strictly according to paper format. \n
+\n
+Regards,\n
+$name on behalf of on behalf of $committee \n 

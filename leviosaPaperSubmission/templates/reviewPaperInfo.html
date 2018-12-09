@@ -1,0 +1,116 @@
+{% extends "layout.html" %}
+{% block body %}
+  {% if error %}<p class=error><strong>Error:</strong> {{ error }}{% endif %}
+  <form  action="{{ url_for('review_paper_info', tjyear=tjyear,paperId=paperId) }}" method=post class=entries enctype=multipart/form-data>
+  <dl>
+	<table class=reviewTable>
+	  <tr>
+	  <td>
+	   
+	  <td>
+	  </tr>	
+	  <tr>
+	  <td>
+	  <h4>Updating Information:</h4>
+	  <td>
+	  </tr>	  
+	  <tr>
+	  <td>
+
+	  <dt>Paper Title:
+	  <dd><input type=text name=paperTitle value="{{thisPaperInfo.paperInfo.paperTitle}}">
+	  
+		{% for authorInfo in thisPaperInfo.authorList %}
+			<dt>Author {{loop.index}}'s Email:
+			<dd><input type=text name={{ 'authorEmail' ~(loop.index|string)}} value="{{authorInfo.email}}">
+		{% endfor %}
+	  </td>
+	  <td>
+	  <dt>Department<br/>
+	  <dd>
+		<input type=text name=department value="{{thisPaperInfo.paperInfo.department}}">
+
+	  <dt>Function Area<br/>
+	  <dd>
+		<select name=tjSection>
+		{% for string in displayStrings.RESEARCHING_AREAS %}
+			<option value={{loop.index0}} {% if thisPaperInfo.paperInfo.tjSection==loop.index0 %} selected=selected {%endif%}>{{string}}</option>
+		{% endfor %}
+		</select>
+	  <hr>
+	  <dd><a href="{{thisPaperInfo.paperInfo.zipURL}}">Current file Link</a>
+	  <dd><a href="{{thisPaperInfo.paperInfo.pdfURL}}">Current Pdf Link</a>
+
+	  <dt>Upload zip Files
+      <input type=file name=zip2Bsubmitted>
+	  <dt>Upload Pdf File
+      <input type=file name=pdf2Bsubmitted>
+
+
+	  <dt><input type=submit value=Submit>
+	  </td>
+	  </tr>
+	  <tr>
+	  <td>
+	  <h4>Review Feedback:</h4>
+	  <td>
+	  </tr>	  
+	  <tr>
+	  <td>
+      <dt>Manager's Email:
+      <dd><input type=text name=managerEmail value="{{thisPaperInfo.managerInfo.email}}">
+      <dt>Manager's Review Feedback:
+	  <ul>
+			<li>Overall: <ul><li>{{displayStrings.REVIEW_RESULT[managerReviewInfo.Overall]}}</li></ul>
+			{% for eachReviewItem in managerReviewInfo.itemList %}
+			<li>{{eachReviewItem.reviewItemName}}:
+			<ul><li>{{displayStrings.REVIEW_RESULT[eachReviewItem.reviewItemGrade]}} </li></ul>
+			{% endfor %}
+
+			<li>Comments:</li>
+				<ul>
+				{% for eachReviewQuestion in managerReviewInfo.questionList %}
+					<li>{{eachReviewQuestion.question}}
+					<li><textarea readonly name=answer rows="16" cols="50">{{eachReviewQuestion.answer}}</textarea>
+				{% endfor %}
+				</ul>
+			<li>
+				{%if expertReviewInfo.commentedVersionURL == "n/a"%} 
+				No commented PDF document.
+				{%else%}
+				<a href="{{managerReviewInfo.commentedVersionURL}}">Commented PDF Link</a>
+				{%endif%}
+			</li>	  
+	  </ul>
+	  </td>
+	  <td>
+      <dt>Expert's Email:
+      <dd>{{thisPaperInfo.expertInfo.email}}
+      <dt>Expert's Review Feedback:
+	  <ul>
+			<li>Overall: <ul><li>{{displayStrings.REVIEW_RESULT[expertReviewInfo.Overall]}}</li></ul>
+			{% for eachReviewItem in expertReviewInfo.itemList %}
+			<li>{{eachReviewItem.reviewItemName}}:
+			<ul><li>{{displayStrings.REVIEW_RESULT[eachReviewItem.reviewItemGrade]}} </li></ul>
+			{% endfor %}
+			<li>Comments:</li>
+				<ul>
+				{% for eachReviewQuestion in expertReviewInfo.questionList %}
+					<li>{{eachReviewQuestion.question}}
+					<li><textarea readonly name=answer rows="16" cols="50">{{eachReviewQuestion.answer}}</textarea>
+				{% endfor %}
+				</ul>
+			<li>
+				{%if expertReviewInfo.commentedVersionURL == "n/a"%} 
+				No commented PDF document.
+				{%else%}
+				<a href="{{expertReviewInfo.commentedVersionURL}}">Commented PDF Link</a>
+				{%endif%}
+			</li>
+	  </ul>
+	  </td>
+	</tr>
+	</table>
+  </dl>
+  </form>
+{% endblock %}
